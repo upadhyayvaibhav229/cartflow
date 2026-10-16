@@ -5,7 +5,6 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'morrow — A softer kind of glow',
   description: 'Thoughtful skincare for your everyday ritual. Gentle formulas, honest ingredients, and nothing your skin does not need.',
-  generator: 'v0.app',
   icons: { icon: '/icon-light-32x32.png', apple: '/apple-icon.png' },
 }
 
