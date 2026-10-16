@@ -18,8 +18,12 @@ async function proxy(request: NextRequest, context: { params: Promise<{ path: st
   const responseHeaders = new Headers({ 'Content-Type': response.headers.get('content-type') || 'application/json' })
   const nextCartToken = response.headers.get('Cart-Token')
   if (nextCartToken) responseHeaders.set('Cart-Token', nextCartToken)
+  const setCookie = response.headers.get('set-cookie')
+  if (setCookie) responseHeaders.set('set-cookie', setCookie)
   return new NextResponse(await response.text(), { status: response.status, headers: responseHeaders })
 }
 
 export const GET = proxy
 export const POST = proxy
+export const PUT = proxy
+export const DELETE = proxy

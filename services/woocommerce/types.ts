@@ -31,8 +31,16 @@ export type WooCommerceCart = {
 }
 
 export type WooCommerceCategory = { id: number; name: string; slug: string; count: number; image?: WooCommerceImage }
+export type WooCommerceTag = { id: number; name: string; slug: string; count: number }
+export type WooCommerceAttribute = { id: number; name: string; slug: string; taxonomy: string; has_variations: boolean; terms?: { id: number; name: string; slug: string }[] }
 
-export type CheckoutPayload = { billing_address: Record<string, string>; shipping_address?: Record<string, string>; payment_method?: string; payment_data?: Record<string, string> }
+export type CheckoutPayload = {
+  billing_address: Record<string, string>
+  shipping_address?: Record<string, string>
+  payment_method?: string
+  payment_data?: Record<string, string>[]
+  customer_note?: string
+}
 
 export type WooCommerceError = { code?: string; message: string; data?: { status?: number } }
 

@@ -1,5 +1,5 @@
 import { wooCommerceRequest } from './client'
-import type { ProductQuery, WooCommerceCategory, WooCommerceProduct } from './types'
+import type { ProductQuery, WooCommerceAttribute, WooCommerceCategory, WooCommerceProduct, WooCommerceTag } from './types'
 
 function queryString(query: ProductQuery = {}) {
   const params = new URLSearchParams()
@@ -10,3 +10,8 @@ function queryString(query: ProductQuery = {}) {
 export function getProducts(query?: ProductQuery) { const search = queryString(query); return wooCommerceRequest<WooCommerceProduct[]>(`/products${search ? `?${search}` : ''}`) }
 export function getProduct(id: number | string) { return wooCommerceRequest<WooCommerceProduct>(`/products/${encodeURIComponent(id)}`) }
 export function getCategories() { return wooCommerceRequest<WooCommerceCategory[]>('/products/categories?per_page=100') }
+export function getTags() { return wooCommerceRequest<WooCommerceTag[]>('/products/tags?per_page=100') }
+export function getAttributes() { return wooCommerceRequest<WooCommerceAttribute[]>('/products/attributes?per_page=100') }
+export function getProductsByCategory(category: string | number, query: Omit<ProductQuery, 'category'> = {}) {
+  return getProducts({ ...query, category: String(category) })
+}
