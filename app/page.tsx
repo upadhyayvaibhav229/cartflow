@@ -78,6 +78,18 @@ export default function Page() {
     redirect_url?: string
   } | null>(null)
   const [couponCode, setCouponCode] = useState('')
+  const [account, setAccount] = useState<{ authenticated: boolean; displayName?: string }>({ authenticated: false })
+
+  useEffect(() => {
+    let current = true
+    fetch('/api/auth/me', { cache: 'no-store' })
+      .then(async (response) => {
+        const result = await response.json()
+        if (response.ok && current) setAccount(result)
+      })
+      .catch(() => {})
+    return () => { current = false }
+  }, [])
 
   useEffect(() => {
     let current = true
@@ -167,6 +179,10 @@ export default function Page() {
   }
 
   async function beginCheckout() {
+    if (!account.authenticated) {
+      window.location.assign('/account?next=checkout')
+      return
+    }
     setPanel('checkout')
     setCheckoutError('')
     setCheckoutBusy(true)
@@ -232,6 +248,7 @@ export default function Page() {
             <a href="#story">Our approach</a>
           </nav>
           <div className="flex items-center gap-4 text-sm">
+            <Link href="/account" className="text-xs uppercase">{account.authenticated ? 'My account' : 'Sign in'}</Link>
             <button aria-label="Search products" onClick={() => document.getElementById('product-search')?.focus()}>
               <Search />
             </button>
@@ -250,6 +267,7 @@ export default function Page() {
             <Link href="/collections" onClick={() => setMenuOpen(false)}>Shop all</Link>
             <a href="#categories" onClick={() => setMenuOpen(false)}>Categories</a>
             <a href="#story" onClick={() => setMenuOpen(false)}>Our approach</a>
+            <Link href="/account" onClick={() => setMenuOpen(false)}>{account.authenticated ? 'My account' : 'Sign in'}</Link>
           </nav>
         )}
       </header>

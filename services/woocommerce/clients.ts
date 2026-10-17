@@ -1,7 +1,7 @@
 import type { WooCommerceRequestOptions, WooCommerceSession } from "./types";
 
 export const WOOCOMMERCE_BASE_URL = (
-  typeof window !== "undefined" && !process.env.NEXT_PUBLIC_WOOCOMMERCE_URL
+  typeof window !== "undefined"
     ? "/api/woocommerce"
     : process.env.NEXT_PUBLIC_WOOCOMMERCE_URL ||
       (process.env.WORDPRESS_URL

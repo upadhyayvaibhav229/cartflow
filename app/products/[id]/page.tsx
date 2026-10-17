@@ -79,9 +79,12 @@ export default function ProductDetailPage() {
       <header className="border-b border-[#26352d]/10 px-5 py-5 md:px-10">
         <div className="mx-auto flex max-w-[1440px] items-center justify-between">
           <Link href="/" className="font-serif text-2xl tracking-[-0.06em] md:text-3xl">morrow</Link>
-          <Link href="/collections" className="inline-flex items-center gap-2 text-xs font-semibold tracking-[0.1em] uppercase">
-            <ArrowLeft size={16} /> All products
-          </Link>
+          <div className="flex items-center gap-5">
+            <Link href="/account" className="text-xs font-semibold tracking-[0.1em] uppercase">Account</Link>
+            <Link href="/collections" className="inline-flex items-center gap-2 text-xs font-semibold tracking-[0.1em] uppercase">
+              <ArrowLeft size={16} /> All products
+            </Link>
+          </div>
         </div>
       </header>
 

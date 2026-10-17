@@ -1,4 +1,5 @@
 import { WOOCOMMERCE_BASE_URL } from "../../../../services/woocommerce/clients";
+import { cookies } from "next/headers";
 
 type RouteContext = {
   params: Promise<{ path: string[] }>;
@@ -16,10 +17,19 @@ async function proxyWooCommerceRequest(
   );
   const headers = new Headers({ Accept: "application/json" });
 
-  for (const name of ["content-type", "cookie", "nonce", "cart-token"]) {
+  for (const name of ["content-type", "nonce", "cart-token"]) {
     const value = request.headers.get(name);
     if (value) headers.set(name, value);
   }
+  const forwardedCookies = request.headers
+    .get("cookie")
+    ?.split(";")
+    .map((cookie) => cookie.trim())
+    .filter((cookie) => !cookie.startsWith("cartflow_jwt="))
+    .join("; ");
+  if (forwardedCookies) headers.set("cookie", forwardedCookies);
+  const token = (await cookies()).get("cartflow_jwt")?.value;
+  if (token) headers.set("Authorization", `Bearer ${token}`);
 
   let upstream: Response;
   try {
